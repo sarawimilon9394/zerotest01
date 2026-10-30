@@ -17,8 +17,6 @@ zerops:
     run:
       base: alpine@latest
       os: alpine
-      prepareCommands:
-        - apk add --no-cache ca-certificates tzdata
       ports:
         - port: 8080
           httpSupport: true
