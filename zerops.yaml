@@ -1,0 +1,36 @@
+# ==============================================================================
+# BERMUDA PORTAL - ZEROPS.IO BUILD & RUNTIME PIPELINE
+# Platform: Zerops Cloud (Prague prg1 & US-East) · Incus System Containers
+# Architecture: Dual-Setup (portal & app) · Zero-Collision Secret Variables
+# ==============================================================================
+
+zerops:
+  - setup: portal
+    build:
+      base: go@latest
+      os: alpine
+      buildCommands:
+        - CGO_ENABLED=0 GOOS=linux go build -trimpath -tags netgo,osusergo -ldflags="-s -w -buildid=" -o ./bermuda-portal .
+      deployFiles:
+        - ./bermuda-portal
+
+    run:
+      base: alpine@latest
+      os: alpine
+      prepareCommands:
+        - apk add --no-cache ca-certificates tzdata
+      ports:
+        - port: 8080
+          httpSupport: true
+      readinessCheck:
+        httpGet:
+          port: 8080
+          path: /healthz
+      healthCheck:
+        httpGet:
+          port: 8080
+          path: /healthz
+      start: ./bermuda-portal
+
+  - setup: app
+    extends: portal
