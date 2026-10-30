@@ -1,0 +1,34 @@
+#yamlPreprocessor=on
+# ==============================================================================
+# BERMUDA PORTAL - ZEROPS 1-CLICK PROJECT IMPORT MANIFEST
+# Usage: In Zerops Dashboard -> Click "Import a project" -> Paste this YAML
+# Cost Optimization: Lightweight Core ($0/mo) + Shared CPU (~$0.60/mo from free credit)
+# ==============================================================================
+
+project:
+  name: bermuda-portal
+  corePackage: LIGHT
+
+services:
+  - hostname: portal
+    type: go@latest
+    zeropsSetup: portal
+    buildFromGit: https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME
+    enableSubdomainAccess: true
+    minContainers: 1
+    maxContainers: 1
+    verticalAutoscaling:
+      cpuMode: SHARED
+      minCpu: 1
+      maxCpu: 2
+      startCpuCoreCount: 1
+      minRam: 0.5
+      maxRam: 1
+      minDisk: 1
+      maxDisk: 2
+    envSecrets:
+      CLOUDFLARE_API_TOKEN: ""
+      ZEROPS_API_TOKEN: ""
+      CUSTOM_DOMAIN: ""
+      BERMUDA_MASTER_KEY: "bmk-<@generateRandomString(<32>)>"
+      BERMUDA_REGION: "prg1"
